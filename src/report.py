@@ -4,6 +4,7 @@
 import sys
 import os.path
 import codecs
+import types
 import getopt
 import mysql.connector
 from mysql.connector import errorcode
@@ -96,19 +97,26 @@ def setReport(connect, db):
         os.remove(report)
     report_file = codecs.open(report, 'a', 'utf-8')
     report_file.write(html_head.render())
-    report_file.write(schema_name.render(name=db[0]))
-    for tb in getTables(connect, db):
-        args = db + tb
-        report_file.write(table_title.render(name=tb[0], comment=tb[1]))
-        report_file.write(table_head.render())
-        for col in geSchema(connect, args[0:2]):
-            report_file.write(table_body.render(name=col[0], type=col[1], null=col[2], key=col[3], extra=col[4], default=col[5], comment=col[6]))
+    for dbNames in db:
+        if type(dbNames) is tuple:
+            dbName = dbNames
+            report_file.write(schema_name.render(name=dbNames[0]))
+        else:
+            dbName = (dbNames,)
+            report_file.write(schema_name.render(name=dbNames))
+        for tb in getTables(connect, dbName):
+            args = dbName + tb
+            report_file.write(table_title.render(name=tb[0], comment=tb[1]))
+            report_file.write(table_head.render())
+            for col in geSchema(connect, args[0:2]):
+                report_file.write(table_body.render(name=col[0], type=col[1], null=col[2], key=col[3], extra=col[4], default=col[5], comment=col[6]))
         report_file.write(table_tail.render())
     report_file.write(html_tail.render())
     report_file.close()
 
 
 if __name__ == '__main__':
+    user = password = host = database = report = None
     options, args = getopt.getopt(sys.argv[1:], 'u:p:h:D:r:', ['user=', 'password=', 'host=', 'database=', 'report='])
     for opt, arg in options:
         if opt in ('-u', '--user'):

@@ -7,7 +7,7 @@ MySQL Table Statement Report Generator tool
 
 * jinja2
 
-> pip install jinja
+> pip install jinja2
 
 * mysql.connector 1.x
 

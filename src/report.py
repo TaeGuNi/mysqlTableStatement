@@ -15,6 +15,7 @@ html_head = Template('<!DOCTYPE html>\n'
                      '<html lang="ko">\n'
                      '<head>\n'
                      '<title>Database Schema Report</title>\n'
+                     '<meta charset="utf-8" />'
                      '<style>\n'
                      'body {font-size: 11px}\n'
                      'th {background: #eee}\n'
@@ -110,7 +111,7 @@ def setReport(connect, db):
             report_file.write(table_head.render())
             for col in geSchema(connect, args[0:2]):
                 report_file.write(table_body.render(name=col[0], type=col[1], null=col[2], key=col[3], extra=col[4], default=col[5], comment=col[6]))
-        report_file.write(table_tail.render())
+            report_file.write(table_tail.render())
     report_file.write(html_tail.render())
     report_file.close()
 

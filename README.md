@@ -11,7 +11,9 @@ MySQL Table Statement Report Generator tool
 
 * mysql.connector 1.x
 
-> python setup.py
+> wget http://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-1.1.6.tar.gz
+>
+> python setup.py install
 
 
 # Arguments

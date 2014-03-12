@@ -4,7 +4,6 @@
 import sys
 import os.path
 import codecs
-import types
 import getopt
 import mysql.connector
 from mysql.connector import errorcode
